@@ -15,8 +15,9 @@ export default function DetailScreen() {
     const fetchDetail = async () => {
       try {
         setLoading(true);
-        // Memanggil endpoint lookup API TheMealDB berdasarkan ID
-        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+        // Memanggil endpoint lookup API TheMealDB berdasarkan ID melalui .env
+        const baseDetailUrl = process.env.EXPO_PUBLIC_API_DETAIL_URL || 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
+        const res = await fetch(`${baseDetailUrl}${id}`);
         if (!res.ok) throw new Error('Gagal memuat data');
         
         const data = await res.json();
