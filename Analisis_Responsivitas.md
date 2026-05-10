@@ -30,13 +30,14 @@ Dengan menggunakan pendekatan **proporsional / Flexbox**, developer mendelegasik
 
 ---
 
-## Kesimpulan Implementasi pada Aplikasi FlavorDash
-Pada komponen `<FoodCard />` milik aplikasi **FlavorDash**, kita menerapkan struktur responsif dengan arsitektur berikut:
+## Kesimpulan Implementasi pada Aplikasi FlavorDash (Nested View)
+Pada komponen `<FoodCard />` milik aplikasi **FlavorDash**, kita menerapkan struktur responsif dengan arsitektur **Nested View** (View bersarang) untuk memisahkan gambar dan teks ke dalam kontainer (*container*) masing-masing secara sejajar:
 
 ```tsx
+{/* Parent View / Container Utama */}
 <View style={{ flexDirection: 'row' }}>
   
-  {/* Menggunakan proporsi 1 bagian */}
+  {/* Child 1 (Nested View): Menggunakan proporsi 1 bagian */}
   <View style={{ flex: 1 }}>
      <Image source={...} style={{ width: '100%', height: '100%' }} />
   </View>
