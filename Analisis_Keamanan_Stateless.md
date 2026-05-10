@@ -31,7 +31,27 @@ Pada arsitektur Stateless, server **tidak menyimpan** data sesi apa pun (server 
 
 ---
 
-## 2. Mengapa Stateless (JWT) Lebih Efisien untuk Aplikasi Skala Besar (Jutaan Pengguna)?
+## 2. Anatomi JWT (JSON Web Token)
+Untuk memahami bagaimana Stateless Authentication bekerja dengan aman, kita perlu mengetahui anatomi JWT yang terdiri dari tiga bagian utama, dipisahkan oleh titik (`.`): `Header.Payload.Signature`.
+
+### A. Header
+Header biasanya berisi dua informasi:
+* **Tipe Token**: Yaitu JWT.
+* **Algoritma Hashing**: Algoritma kriptografi yang digunakan untuk membuat *Signature*, misalnya HMAC SHA256 (HS256) atau RSA.
+
+### B. Payload (Claims)
+Payload berisi pernyataan (*claims*) atau data pengguna. Ada beberapa jenis *claims* seperti *registered* (standar seperti `iss` untuk issuer, `exp` untuk expiration), *public*, dan *private claims*.
+* **Teknis Expiration (`exp`)**: JWT mengatur kedaluwarsa secara mandiri. *Payload* memuat timestamp `exp`. Saat server memvalidasi token, server akan mengecek apakah waktu saat ini telah melewati nilai `exp`. Jika ya, token otomatis ditolak tanpa harus mengecek database.
+* **Peringatan Keamanan**: Walaupun aman dari manipulasi (berkat *Signature*), Payload **TIDAK DIENKRIPSI** (hanya di-encode menggunakan Base64Url). Artinya, siapa pun yang melihat token tersebut bisa membaca payload-nya. Oleh karena itu, **DILARANG KERAS** menyimpan kebocoran data sensitif (seperti password atau PIN) di dalam Payload.
+
+### C. Signature
+Ini adalah bagian terpenting untuk memastikan token tidak dimanipulasi di tengah jalan.
+* **Teknis Signature**: Dibuat dengan mengambil *encoded* Header, *encoded* Payload, dan **Secret Key** (kunci rahasia yang hanya diketahui oleh server), lalu dilakukan proses hashing menggunakan algoritma yang ditentukan di Header.
+* Jika peretas (*hacker*) mengubah sedikit saja isi Payload (misal mengubah `role: user` menjadi `role: admin`), *Signature* lama akan menjadi tidak valid karena peretas tidak memiliki *Secret Key* server untuk membuat *Signature* yang baru. Server akan langsung menolak token yang *signature*-nya cacat.
+
+---
+
+## 3. Mengapa Stateless (JWT) Lebih Efisien untuk Aplikasi Skala Besar (Jutaan Pengguna)?
 
 Dalam konteks aplikasi mobile seperti FlavorDash yang menargetkan jutaan *users*, pendekatan Stateless sangat superior karena alasan teknis berikut:
 
