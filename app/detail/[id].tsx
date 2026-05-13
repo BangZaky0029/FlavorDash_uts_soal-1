@@ -76,19 +76,29 @@ export default function DetailScreen() {
 
         <View style={styles.separator} />
 
-        <Text style={styles.sectionTitle}>Bahan-Bahan Utama:</Text>
-        <Text style={styles.ingredientText}>
-          {/* Menampilkan beberapa bahan pertama dari API */}
-          • {mealDetail.strMeasure1} {mealDetail.strIngredient1}{'\n'}
-          • {mealDetail.strMeasure2} {mealDetail.strIngredient2}{'\n'}
-          • {mealDetail.strMeasure3} {mealDetail.strIngredient3}{'\n'}
-          {mealDetail.strIngredient4 ? `• ${mealDetail.strMeasure4} ${mealDetail.strIngredient4}` : ''}
-        </Text>
+        <Text style={styles.sectionTitle}>Rincian Pesanan:</Text>
+        
+        <View style={styles.orderRow}>
+          <Text style={styles.orderLabel}>Harga per porsi</Text>
+          <Text style={styles.orderValue}>Rp {(((parseInt(mealDetail.idMeal) || 0) % 50 + 25) * 1000).toLocaleString('id-ID')}</Text>
+        </View>
+
+        <View style={styles.orderRow}>
+          <Text style={styles.orderLabel}>Jumlah Pesanan</Text>
+          <Text style={styles.orderValue}>1 porsi</Text>
+        </View>
+        
+        <View style={styles.orderRow}>
+          <Text style={styles.orderLabel}>Biaya Layanan</Text>
+          <Text style={styles.orderValue}>Rp 2.000</Text>
+        </View>
 
         <View style={styles.separator} />
-
-        <Text style={styles.sectionTitle}>Instruksi Memasak (Deskripsi Pesanan):</Text>
-        <Text style={styles.instructions}>{mealDetail.strInstructions}</Text>
+        
+        <View style={styles.orderRowTotal}>
+          <Text style={styles.totalLabel}>Total Pembayaran</Text>
+          <Text style={styles.totalValue}>Rp {((((parseInt(mealDetail.idMeal) || 0) % 50 + 25) * 1000) + 2000).toLocaleString('id-ID')}</Text>
+        </View>
       </View>
 
       {/* ── Info JWT ── */}
@@ -201,16 +211,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#f1f5f9',
+    marginBottom: 12,
+  },
+  orderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 8,
   },
-  ingredientText: {
-    color: '#cbd5e1',
-    lineHeight: 24,
-  },
-  instructions: {
+  orderLabel: {
     color: '#9ca3af',
-    lineHeight: 22,
-    textAlign: 'justify',
+    fontSize: 14,
+  },
+  orderValue: {
+    color: '#f1f5f9',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  orderRowTotal: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  totalLabel: {
+    color: '#f1f5f9',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  totalValue: {
+    color: '#10b981',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   tokenContainer: {
     marginHorizontal: 16,

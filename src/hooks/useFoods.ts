@@ -27,13 +27,18 @@ export const useFoods = () => {
         const data = await response.json();
         
         if (data.meals && data.meals.length > 0) {
-          const formattedData: Food[] = data.meals.map((meal: any) => ({
-            id: meal.idMeal,
-            name: meal.strMeal,
-            image: meal.strMealThumb,
-            description: `Nikmati kelezatan sajian laut khas dari ${meal.strMeal} dengan bahan segar pilihan.`,
-            price: Math.floor(Math.random() * (75 - 25 + 1) + 25) * 1000,
-          }));
+          const formattedData: Food[] = data.meals.map((meal: any) => {
+            // Deterministic price based on idMeal
+            const numericId = parseInt(meal.idMeal) || 0;
+            const deterministicPrice = (numericId % 50 + 25) * 1000;
+            return {
+              id: meal.idMeal,
+              name: meal.strMeal,
+              image: meal.strMealThumb,
+              description: `Nikmati kelezatan sajian laut khas dari ${meal.strMeal} dengan bahan segar pilihan.`,
+              price: deterministicPrice,
+            };
+          });
           
           setFoods(formattedData);
         } else {
